@@ -13976,7 +13976,7 @@ module.exports = function normalizeComponent (
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(13);
-module.exports = __webpack_require__(44);
+module.exports = __webpack_require__(45);
 
 
 /***/ }),
@@ -14001,7 +14001,8 @@ window.Vue = __webpack_require__(37);
  */
 
 Vue.component('articles', __webpack_require__(40));
-Vue.component('navbar', __webpack_require__(42));
+Vue.component('navbar', __webpack_require__(43));
+
 var app = new Vue({
   el: '#app'
 });
@@ -47265,9 +47266,9 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 var disposed = false
 var normalizeComponent = __webpack_require__(11)
 /* script */
-var __vue_script__ = null
+var __vue_script__ = __webpack_require__(41)
 /* template */
-var __vue_template__ = __webpack_require__(41)
+var __vue_template__ = __webpack_require__(42)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47307,13 +47308,267 @@ module.exports = Component.exports
 
 /***/ }),
 /* 41 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+		return {
+			articles: [],
+			article: {
+				id: '',
+				title: '',
+				body: ''
+			},
+			article_id: '',
+			pagination: {},
+			edit: false
+		};
+	},
+	created: function created() {
+		this.fetchArticles();
+	},
+
+
+	methods: {
+		fetchArticles: function fetchArticles(page_url) {
+			var _this = this;
+
+			var vm = this;
+			if (!page_url) {
+				page_url = 'http://localhost/crudvue/public/api/articles';
+			}
+			//var url = 'http://localhost/crudvue/public' + page_url;
+
+
+			//alert(page_url);
+			fetch(page_url).then(function (res) {
+				return res.json();
+			}).then(function (res) {
+				//console.log(res.data);
+				_this.articles = res.data;
+				vm.makePagination(res.meta, res.links);
+				console.log(res.data);
+			}).catch(function (err) {
+				return console.log(err);
+			});
+		},
+		makePagination: function makePagination(meta, links) {
+			var pagination = {
+				current_page: meta.current_page,
+				last_page: meta.last_page,
+				next_page_url: links.next,
+				prev_page_url: links.prev
+			};
+
+			this.pagination = pagination;
+			//alert(pagination.next_page_url);
+		},
+		deleteArticle: function deleteArticle(id) {
+			var _this2 = this;
+
+			if (confirm('Are you sure?')) {
+				fetch('api/article/' + id, {
+					method: 'delete'
+				}).then(function (res) {
+					return res.json();
+				}).then(function (data) {
+					alert('Article removed');
+					_this2.fetchArticles();
+				}).them(function (err) {
+					return console.log(err);
+				});
+			}
+		}
+	}
+});
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h2", [_vm._v("Articles")])
+  return _c("div", [
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "h2",
+      {
+        staticClass: "text-primary",
+        staticStyle: { "text-align": "center", "text-decoration": "underline" }
+      },
+      [_vm._v("Articles")]
+    ),
+    _vm._v(" "),
+    _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+      _c("ul", { staticClass: "pagination" }, [
+        _c(
+          "li",
+          {
+            staticClass: "page-item",
+            class: [{ disabled: !_vm.pagination.prev_page_url }]
+          },
+          [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    _vm.fetchArticles(_vm.pagination.prev_page_url)
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fa fa-arrow-circle-left" })]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c("li", { staticClass: "page-item disabled" }, [
+          _c(
+            "a",
+            {
+              staticClass: "page-link text-dark",
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  _vm.fetchArticles(_vm.pagination.prev_page_url)
+                }
+              }
+            },
+            [
+              _c("i", { staticClass: "fa fa-file-text-o" }),
+              _vm._v(
+                "  " +
+                  _vm._s(_vm.pagination.current_page) +
+                  " of " +
+                  _vm._s(_vm.pagination.last_page)
+              )
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "li",
+          {
+            staticClass: "page-item",
+            class: [{ disabled: !_vm.pagination.next_page_url }]
+          },
+          [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    _vm.fetchArticles(_vm.pagination.next_page_url)
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fa fa-arrow-circle-right" })]
+            )
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "row" },
+      _vm._l(_vm.articles, function(article) {
+        return _c("div", { key: article.id, staticClass: "col-md-4" }, [
+          _c(
+            "div",
+            {
+              staticClass: "card card-body animated fadeIn",
+              staticStyle: { "margin-bottom": "10px" }
+            },
+            [
+              _c("h5", { staticClass: "card-title" }, [
+                _vm._v(_vm._s(article.title))
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v(_vm._s(article.body))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c("div", { staticClass: "pull-right" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "btn-group",
+                        attrs: { role: "group", "aria-label": "Basic example" }
+                      },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                _vm.deleteArticle(article.id)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fa fa-trash-o" })]
+                        )
+                      ]
+                    )
+                  ])
+                ])
+              ])
+            ]
+          )
+        ])
+      })
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -47326,7 +47581,7 @@ if (false) {
 }
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -47334,7 +47589,7 @@ var normalizeComponent = __webpack_require__(11)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(43)
+var __vue_template__ = __webpack_require__(44)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47373,7 +47628,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -47389,11 +47644,11 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "nav",
-      { staticClass: "navbar navbar-expand-sm navbar-dark bg-info mb-2" },
+      { staticClass: "navbar navbar-expand-sm navbar-dark bg-primary mb-2" },
       [
         _c("div", { staticClass: "container" }, [
           _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
-            _vm._v("Articles")
+            _c("i", { staticClass: "fa fa-2x fa-newspaper-o" })
           ])
         ])
       ]
@@ -47410,7 +47665,7 @@ if (false) {
 }
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -1,7 +1,7 @@
 <template>
-	<nav class="navbar navbar-expand-sm navbar-dark bg-info mb-2">
+	<nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-2">
 		<div class="container">
-  			<a class="navbar-brand" href="#">Articles</a>
+  			<a class="navbar-brand" href="#"><i class="fa fa-2x fa-newspaper-o"></i></a>
 		</div>
 </nav>
 </template>
