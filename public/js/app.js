@@ -47369,11 +47369,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -47476,7 +47471,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 				}).then(function (data) {
 					_this3.article.title = '';
 					_this3.article.body = '';
-					alert('Article Added');
+					_this3.$swal("Good! Your Article has been Add!", {
+						icon: "success"
+					});
 					_this3.fetchArticles();
 				}).catch(function (err) {
 					return console.log(err);
@@ -47494,7 +47491,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 				}).then(function (data) {
 					_this3.article.title = '';
 					_this3.article.body = '';
-					alert('Article Updated');
+					_this3.$swal("Good! Your Article has been Updated!", {
+						icon: "success"
+					});
 					_this3.fetchArticles();
 				}).catch(function (err) {
 					return console.log(err);

@@ -1,17 +1,14 @@
 <template>
 <div>
 	<br>
-
 	<nav aria-label="Page navigation example">
 	  <ul class="pagination">
 	    <li v-bind:class="[{disabled: !pagination.prev_page_url}]" class="page-item"><a class="page-link" href="#" @click="fetchArticles(pagination.prev_page_url)"><i class="fa fa-arrow-circle-left"></i></a></li>
 	    <li class="page-item disabled"><a class="page-link text-dark" href="#" @click="fetchArticles(pagination.prev_page_url)"><i class="fa fa-file-text-o"></i>  {{pagination.current_page}} of {{pagination.last_page}}</a></li>
 	    <li v-bind:class="[{disabled: !pagination.next_page_url}]" class="page-item"><a class="page-link" href="#"
 	    	 @click="fetchArticles(pagination.next_page_url)"><i class="fa fa-arrow-circle-right"></i></a></li>
-
 	  </ul>
 	</nav>
-
 <div class="row">
 	<div class="col-md-4">
 		<div class="card card-body animated fadeIn" style="margin-bottom:10px;" >
@@ -27,7 +24,6 @@
 			</form>
 		</div>
 	</div>
-
 	<div class="col-md-4" v-for="article in articles" v-bind:key="article.id">
 		<div class="card card-body animated fadeIn" style="margin-bottom:10px;" >
 			<h5 class="card-title">{{article.title}}</h5>
@@ -46,7 +42,6 @@
 		</div>
 	</div>
 </div>
-
 </div>
 </template>
 
@@ -81,6 +76,7 @@ Vue.use(VueSwal)
 				{
 					page_url = 'http://localhost/crudvue/public/api/articles';
 				}
+				
 				//var url = 'http://localhost/crudvue/public' + page_url;
 	
 
@@ -151,7 +147,9 @@ Vue.use(VueSwal)
 					.then(data => {
 						this.article.title = '';
 						this.article.body = '';
-						alert('Article Added');
+						    this.$swal("Good! Your Article has been Add!", {
+						      icon: "success",
+						    });
 						this.fetchArticles();	
 					})
 					.catch(err => console.log(err));
@@ -170,7 +168,9 @@ Vue.use(VueSwal)
 					.then(data => {
 						this.article.title = '';
 						this.article.body = '';
-						alert('Article Updated');
+						    this.$swal("Good! Your Article has been Updated!", {
+						      icon: "success",
+						    });
 						this.fetchArticles();	
 					})
 					.catch(err => console.log(err));ate
