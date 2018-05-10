@@ -1,7 +1,7 @@
 <template>
 <div>
 	<br>
-	<h2 style="text-align:center;text-decoration:underline;" class="text-primary">Articles</h2>
+
 	<nav aria-label="Page navigation example">
 	  <ul class="pagination">
 	    <li v-bind:class="[{disabled: !pagination.prev_page_url}]" class="page-item"><a class="page-link" href="#" @click="fetchArticles(pagination.prev_page_url)"><i class="fa fa-arrow-circle-left"></i></a></li>
@@ -13,6 +13,21 @@
 	</nav>
 
 <div class="row">
+	<div class="col-md-4">
+		<div class="card card-body animated fadeIn" style="margin-bottom:10px;" >
+			<h5 class="card-title">New Article</h5>
+			<form @submit.prevent="addArticle">
+				<div class="form-group">
+				<input type="text" class="form-control" placeholder="Title" v-model="article.title">
+				</div>
+				<div class="form-group">
+				<textarea class="form-control" placeholder="Body" v-model="article.body"></textarea> 
+				</div>
+				<button type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-save text-primary"></i> Save</button>
+			</form>
+		</div>
+	</div>
+
 	<div class="col-md-4" v-for="article in articles" v-bind:key="article.id">
 		<div class="card card-body animated fadeIn" style="margin-bottom:10px;" >
 			<h5 class="card-title">{{article.title}}</h5>
@@ -21,7 +36,8 @@
 				<div class="col-md-12">
 					<div class="pull-right">
 						<div class="btn-group" role="group" aria-label="Basic example">
-							<!--<button type="button" class="btn btn-secondary"><i class="fa fa-search"></i></button>-->
+							<button type="button" class="btn btn-secondary" @click="editArticle(article)"><i class="fa fa-pencil"></i></button>
+
 							<button type="button" class="btn btn-secondary" @click="deleteArticle(article.id)"><i class="fa fa-trash-o"></i></button>
 						</div>
 					</div>
@@ -35,6 +51,10 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import VueSwal from 'vue-swal'
+
+Vue.use(VueSwal)
 	export default {
 		data(){
 			return{
@@ -88,17 +108,80 @@
 			},
 
 			deleteArticle(id){
-				if (confirm('Are you sure?')) {
+				this.$swal({
+				  title: "Are you sure?",
+				  text: "Once deleted, you will not be able to recover this Article!",
+				  icon: "warning",
+				  buttons: true,
+				  dangerMode: true,
+				})
+				.then((willDelete) => {
+				  if (willDelete) {
 					fetch(`api/article/${id}`, {
 						method: 'delete'
 					})
 					.then(res => res.json())
 					.then(data => {
-						alert('Article removed');
+						    this.$swal("Poof! Your Article has been deleted!", {
+						      icon: "success",
+						    });
 						this.fetchArticles();
 					})
 					.them(err => console.log(err));
+				  } else {
+				    this.$swal("Your Article is safe!");
+				  }
+				});
+
+
+			},
+
+			addArticle(){
+				if(this.edit === false)
+				{
+					//Add
+					fetch('api/article',{
+						method: 'post',
+						body: JSON.stringify(this.article),
+						headers: {
+							'content-type':'application/json'
+						}
+					})
+					.then(res => res.json())
+					.then(data => {
+						this.article.title = '';
+						this.article.body = '';
+						alert('Article Added');
+						this.fetchArticles();	
+					})
+					.catch(err => console.log(err));
 				}
+				else
+				{
+					//Add
+					fetch('api/article',{
+						method: 'put',
+						body: JSON.stringify(this.article),
+						headers: {
+							'content-type':'application/json'
+						}
+					})
+					.then(res => res.json())
+					.then(data => {
+						this.article.title = '';
+						this.article.body = '';
+						alert('Article Updated');
+						this.fetchArticles();	
+					})
+					.catch(err => console.log(err));ate
+				}
+			},
+			editArticle(article){
+				this.edit = true;
+				this.article.id = article.id;
+				this.article.article_id = article.id;
+				this.article.title = article.title;
+				this.article.body = article.body;
 			}
 		}
 	}
