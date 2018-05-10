@@ -47369,6 +47369,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -47399,8 +47402,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 			var vm = this;
 			if (!page_url) {
-				page_url = 'http://localhost/crudvue/public/api/articles';
+				page_url = 'http://localhost/crudvue/public/api/article';
 			}
+
 			//var url = 'http://localhost/crudvue/public' + page_url;
 
 
@@ -47458,47 +47462,48 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 		addArticle: function addArticle() {
 			var _this3 = this;
 
-			if (this.edit === false) {
-				//Add
-				fetch('api/article', {
-					method: 'post',
-					body: JSON.stringify(this.article),
-					headers: {
-						'content-type': 'application/json'
-					}
-				}).then(function (res) {
-					return res.json();
-				}).then(function (data) {
-					_this3.article.title = '';
-					_this3.article.body = '';
-					_this3.$swal("Good! Your Article has been Add!", {
-						icon: "success"
-					});
-					_this3.fetchArticles();
-				}).catch(function (err) {
-					return console.log(err);
+			//Add
+			fetch('api/article', {
+				method: 'post',
+				body: JSON.stringify(this.article),
+				headers: {
+					'content-type': 'application/json'
+				}
+			}).then(function (res) {
+				return res.json();
+			}).then(function (data) {
+				_this3.article.title = '';
+				_this3.article.body = '';
+				_this3.$swal("Good! Your Article has been Add!", {
+					icon: "success"
 				});
-			} else {
-				//Add
-				fetch('api/article', {
-					method: 'put',
-					body: JSON.stringify(this.article),
-					headers: {
-						'content-type': 'application/json'
-					}
-				}).then(function (res) {
-					return res.json();
-				}).then(function (data) {
-					_this3.article.title = '';
-					_this3.article.body = '';
-					_this3.$swal("Good! Your Article has been Updated!", {
-						icon: "success"
-					});
-					_this3.fetchArticles();
-				}).catch(function (err) {
-					return console.log(err);
-				});ate;
-			}
+				_this3.fetchArticles();
+			}).catch(function (err) {
+				return console.log(err);
+			});
+		},
+		updateArticle: function updateArticle(id) {
+			var _this4 = this;
+
+			fetch('api/article/' + id, {
+				method: 'put',
+				body: JSON.stringify(this.article),
+				headers: {
+					'content-type': 'application/json'
+				}
+			}).then(function (res) {
+				return res.json();
+			}).then(function (data) {
+				_this4.article.title = '';
+				_this4.article.body = '';
+				_this4.$swal("Good! Your Article has been Updated!", {
+					icon: "success"
+				});
+				_this4.fetchArticles();
+				_this4.edit = false;
+			}).catch(function (err) {
+				return console.log(err);
+			});
 		},
 		editArticle: function editArticle(article) {
 			this.edit = true;
@@ -47506,6 +47511,12 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 			this.article.article_id = article.id;
 			this.article.title = article.title;
 			this.article.body = article.body;
+		},
+		resetForm: function resetForm() {
+			this.article.id = '';
+			this.article.title = '';
+			this.article.body = '';
+			this.edit = false;
 		}
 	}
 });
@@ -47741,68 +47752,125 @@ var render = function() {
             [
               _c("h5", { staticClass: "card-title" }, [_vm._v("New Article")]),
               _vm._v(" "),
-              _c(
-                "form",
-                {
-                  on: {
-                    submit: function($event) {
-                      $event.preventDefault()
-                      return _vm.addArticle($event)
+              _c("form", [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.article.title,
+                        expression: "article.title"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", placeholder: "Title" },
+                    domProps: { value: _vm.article.title },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.article, "title", $event.target.value)
+                      }
                     }
-                  }
-                },
-                [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.article.title,
-                          expression: "article.title"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text", placeholder: "Title" },
-                      domProps: { value: _vm.article.title },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.article, "title", $event.target.value)
-                        }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.article.body,
+                        expression: "article.body"
                       }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("textarea", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.article.body,
-                          expression: "article.body"
+                    ],
+                    staticClass: "form-control",
+                    attrs: { placeholder: "Body" },
+                    domProps: { value: _vm.article.body },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
                         }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { placeholder: "Body" },
-                      domProps: { value: _vm.article.body },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.article, "body", $event.target.value)
-                        }
+                        _vm.$set(_vm.article, "body", $event.target.value)
                       }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(0)
-                ]
-              )
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.edit === true,
+                        expression: "edit===true"
+                      }
+                    ],
+                    staticClass: "btn btn-outline-secondary pull-right",
+                    attrs: { type: "submit" },
+                    on: {
+                      click: function($event) {
+                        _vm.updateArticle(_vm.article.id)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "fa fa-pencil text-success" }),
+                    _vm._v(" Update")
+                  ]
+                ),
+                _vm._v(" "),
+                _c("label", { attrs: { for: "" } }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.edit === true,
+                        expression: "edit===true"
+                      }
+                    ],
+                    staticClass: "btn btn-outline-secondary pull-right",
+                    attrs: { type: "submit" },
+                    on: {
+                      click: function($event) {
+                        _vm.resetForm()
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fa fa-eraser" })]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.edit === false,
+                        expression: "edit===false"
+                      }
+                    ],
+                    staticClass: "btn btn-outline-secondary pull-right",
+                    attrs: { type: "submit" },
+                    on: { click: _vm.addArticle }
+                  },
+                  [
+                    _c("i", { staticClass: "fa fa-save text-primary" }),
+                    _vm._v(" Save")
+                  ]
+                )
+              ])
             ]
           )
         ]),
@@ -47878,21 +47946,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-outline-secondary pull-right",
-        attrs: { type: "submit" }
-      },
-      [_c("i", { staticClass: "fa fa-save text-primary" }), _vm._v(" Save")]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

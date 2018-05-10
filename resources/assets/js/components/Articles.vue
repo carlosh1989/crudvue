@@ -13,14 +13,17 @@
 	<div class="col-md-4">
 		<div class="card card-body animated fadeIn" style="margin-bottom:10px;" >
 			<h5 class="card-title">New Article</h5>
-			<form @submit.prevent="addArticle">
+			<form>
 				<div class="form-group">
 				<input type="text" class="form-control" placeholder="Title" v-model="article.title">
 				</div>
 				<div class="form-group">
 				<textarea class="form-control" placeholder="Body" v-model="article.body"></textarea> 
 				</div>
-				<button type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-save text-primary"></i> Save</button>
+				<button v-show="edit===true" v-on:click="updateArticle(article.id)" type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-pencil text-success"></i> Update</button>
+				<label for=""> </label>
+				<button v-show="edit===true" v-on:click="resetForm()" type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-eraser"></i> </button>
+				<button v-show="edit===false" v-on:click="addArticle" type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-save text-primary"></i> Save</button>
 			</form>
 		</div>
 	</div>
@@ -74,7 +77,7 @@ Vue.use(VueSwal)
 				let vm = this;
 				if(!page_url)
 				{
-					page_url = 'http://localhost/crudvue/public/api/articles';
+					page_url = 'http://localhost/crudvue/public/api/article';
 				}
 				
 				//var url = 'http://localhost/crudvue/public' + page_url;
@@ -133,8 +136,6 @@ Vue.use(VueSwal)
 			},
 
 			addArticle(){
-				if(this.edit === false)
-				{
 					//Add
 					fetch('api/article',{
 						method: 'post',
@@ -153,11 +154,10 @@ Vue.use(VueSwal)
 						this.fetchArticles();	
 					})
 					.catch(err => console.log(err));
-				}
-				else
-				{
-					//Add
-					fetch('api/article',{
+			},
+
+			updateArticle(id){
+					fetch(`api/article/${id}`, {
 						method: 'put',
 						body: JSON.stringify(this.article),
 						headers: {
@@ -171,10 +171,10 @@ Vue.use(VueSwal)
 						    this.$swal("Good! Your Article has been Updated!", {
 						      icon: "success",
 						    });
-						this.fetchArticles();	
+						this.fetchArticles();
+						this.edit = false;	
 					})
-					.catch(err => console.log(err));ate
-				}
+					.catch(err => console.log(err));
 			},
 			editArticle(article){
 				this.edit = true;
@@ -182,6 +182,13 @@ Vue.use(VueSwal)
 				this.article.article_id = article.id;
 				this.article.title = article.title;
 				this.article.body = article.body;
+			}
+			,
+			resetForm(){
+				this.article.id = '';
+				this.article.title = '';
+				this.article.body = '';	
+				this.edit = false;
 			}
 		}
 	}
