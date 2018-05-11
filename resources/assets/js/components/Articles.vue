@@ -16,7 +16,6 @@
 			<form>
 				<div class="form-group">
 				<input type="text" class="form-control" placeholder="Title" v-model="article.title">
-				{{ message }}
 				</div>
 				<div class="form-group">
 				<textarea class="form-control" placeholder="Body" v-model="article.body"></textarea> 
@@ -117,7 +116,7 @@ Vue.use(VueSwal)
 				})
 				.then((willDelete) => {
 				  if (willDelete) {
-					fetch(`api/article/${id}`, {
+					fetch(`http://localhost/crudvue/public/api/article/${id}`, {
 						method: 'delete'
 					})
 					.then(res => res.json())
@@ -138,7 +137,7 @@ Vue.use(VueSwal)
 
 			addArticle(){
 					//Add
-					fetch('api/article',{
+					fetch('http://localhost/crudvue/public/api/article',{
 						method: 'post',
 						body: JSON.stringify(this.article),
 						headers: {
@@ -158,7 +157,7 @@ Vue.use(VueSwal)
 			},
 
 			updateArticle(id){
-					fetch(`api/article/${id}`, {
+					fetch(`http://localhost/crudvue/public/api/article/${id}`, {
 						method: 'put',
 						body: JSON.stringify(this.article),
 						headers: {

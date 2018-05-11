@@ -24973,12 +24973,6 @@ var app = new Vue({
   el: '#app'
 });
 
-var router = new VueRouter({
-  routes: [
-  // dynamic segments start with a colon
-  { path: '/user/:id', component: User }]
-});
-
 /***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -47372,7 +47366,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -47443,7 +47436,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 				dangerMode: true
 			}).then(function (willDelete) {
 				if (willDelete) {
-					fetch('api/article/' + id, {
+					fetch('http://localhost/crudvue/public/api/article/' + id, {
 						method: 'delete'
 					}).then(function (res) {
 						return res.json();
@@ -47464,7 +47457,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 			var _this3 = this;
 
 			//Add
-			fetch('api/article', {
+			fetch('http://localhost/crudvue/public/api/article', {
 				method: 'post',
 				body: JSON.stringify(this.article),
 				headers: {
@@ -47486,7 +47479,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 		updateArticle: function updateArticle(id) {
 			var _this4 = this;
 
-			fetch('api/article/' + id, {
+			fetch('http://localhost/crudvue/public/api/article/' + id, {
 				method: 'put',
 				body: JSON.stringify(this.article),
 				headers: {
@@ -47775,8 +47768,7 @@ var render = function() {
                         _vm.$set(_vm.article, "title", $event.target.value)
                       }
                     }
-                  }),
-                  _vm._v("\n\t\t\t\t" + _vm._s(_vm.message) + "\n\t\t\t\t")
+                  })
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
