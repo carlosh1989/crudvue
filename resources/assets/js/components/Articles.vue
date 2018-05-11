@@ -13,17 +13,19 @@
 	<div class="col-md-4">
 		<div class="card card-body animated fadeIn" style="margin-bottom:10px;" >
 			<h5 class="card-title">New Article</h5>
-			<form>
+			<form @submit.prevent="addArticle(article.id)">
 				<div class="form-group">
-				<input type="text" class="form-control" placeholder="Title" v-model="article.title">
+				<input name="title" type="text" class="form-control" placeholder="Title" v-model="article.title" v-validate.disabled="'required'">
+				<span v-show="errors.has('title')" class="text-danger">{{ errors.first('title') }}</span>
 				</div>
 				<div class="form-group">
-				<textarea class="form-control" placeholder="Body" v-model="article.body"></textarea> 
+				<textarea name="body" class="form-control" placeholder="Body" v-model="article.body" v-validate.disabled="'required'"></textarea>
+				<span v-show="errors.has('body')" class="text-danger">{{errors.first('body')}}</span> 
 				</div>
-				<button v-show="edit===true" v-on:click="updateArticle(article.id)" type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-pencil text-success"></i> Update</button>
+				<button v-show="edit===true" type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-pencil text-success"></i> Update</button>
 				<label for=""> </label>
 				<button v-show="edit===true" v-on:click="resetForm()" type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-eraser"></i> </button>
-				<button v-show="edit===false" v-on:click="addArticle" type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-save text-primary"></i> Save</button>
+				<button v-show="edit===false" type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-save text-primary"></i> Save</button>
 			</form>
 		</div>
 	</div>
@@ -51,8 +53,11 @@
 <script>
 import Vue from 'vue'
 import VueSwal from 'vue-swal'
+import VeeValidate from 'vee-validate'
 
+Vue.use(VeeValidate)
 Vue.use(VueSwal)
+
 	export default {
 		data(){
 			return{
@@ -74,6 +79,8 @@ Vue.use(VueSwal)
 
 		methods:{
 			fetchArticles(page_url){
+				// In validators
+
 				let vm = this;
 				if(!page_url)
 				{
@@ -82,7 +89,6 @@ Vue.use(VueSwal)
 				
 				//var url = 'http://localhost/crudvue/public' + page_url;
 	
-
 				//alert(page_url);
 				fetch(page_url)
 				.then(res=>res.json())
@@ -135,25 +141,46 @@ Vue.use(VueSwal)
 
 			},
 
-			addArticle(){
+			addArticle(id){
 					//Add
-					fetch('http://localhost/crudvue/public/api/article',{
-						method: 'post',
-						body: JSON.stringify(this.article),
-						headers: {
-							'content-type':'application/json'
-						}
-					})
-					.then(res => res.json())
-					.then(data => {
-						this.article.title = '';
-						this.article.body = '';
-						    this.$swal("Good! Your Article has been Add!", {
-						      icon: "success",
-						    });
-						this.fetchArticles();	
-					})
-					.catch(err => console.log(err));
+					if(this.edit === false)
+					{
+
+				      this.$validator.validate().then(result => {
+				        if (!result) {
+				          
+				        }
+				        else
+				        {
+							fetch('http://localhost/crudvue/public/api/article',{
+								method: 'post',
+								body: JSON.stringify(this.article),
+								headers: {
+									'content-type':'application/json'
+								}
+							})
+							.then(res => res.json())
+							.then(data => {	
+								this.article.title = '';
+								this.article.body = '';
+								this.$validator.pause();
+							    Vue.nextTick(() => {
+							    	this.$validator.resume();
+							    });
+							    this.$swal("Good! Your Article has been Add!", {
+							      icon: "success",
+							    });
+								this.fetchArticles();	
+							})
+							.catch(err => console.log(err));
+				        }
+				      });
+
+					}
+					else
+					{
+						this.updateArticle(id);	
+					}
 			},
 
 			updateArticle(id){
@@ -168,10 +195,14 @@ Vue.use(VueSwal)
 					.then(data => {
 						this.article.title = '';
 						this.article.body = '';
-						    this.$swal("Good! Your Article has been Updated!", {
-						      icon: "success",
-						    });
-						this.fetchArticles();
+						this.$validator.pause();
+					    Vue.nextTick(() => {
+					    	this.$validator.resume();
+					    });
+					    this.$swal("Good! Your Article has been Updated!", {
+					      icon: "success",
+					    });
+						this.fetchArticles();	
 						this.edit = false;	
 					})
 					.catch(err => console.log(err));
@@ -189,6 +220,9 @@ Vue.use(VueSwal)
 				this.article.title = '';
 				this.article.body = '';	
 				this.edit = false;
+			},
+			reset() {
+				Object.assign(this.$data, this.$options.data());
 			}
 		}
 	}
