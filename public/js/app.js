@@ -47372,6 +47372,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -47774,7 +47775,8 @@ var render = function() {
                         _vm.$set(_vm.article, "title", $event.target.value)
                       }
                     }
-                  })
+                  }),
+                  _vm._v("\n\t\t\t\t" + _vm._s(_vm.message) + "\n\t\t\t\t")
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [

@@ -16,6 +16,7 @@
 			<form>
 				<div class="form-group">
 				<input type="text" class="form-control" placeholder="Title" v-model="article.title">
+				{{ message }}
 				</div>
 				<div class="form-group">
 				<textarea class="form-control" placeholder="Body" v-model="article.body"></textarea> 
@@ -64,7 +65,7 @@ Vue.use(VueSwal)
 				},
 				article_id: '',
 				pagination: {},
-				edit: false
+				edit: false,
 			}
 		},
 
