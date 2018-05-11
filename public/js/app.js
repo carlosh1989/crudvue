@@ -47369,12 +47369,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
 
 
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vee_validate__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vee_validate__["a" /* default */], {
+	events: ''
+});
+
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_swal___default.a);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -47531,10 +47536,16 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 			this.article.body = article.body;
 		},
 		resetForm: function resetForm() {
+			var _this5 = this;
+
 			this.article.id = '';
 			this.article.title = '';
 			this.article.body = '';
 			this.edit = false;
+			this.$validator.pause();
+			__WEBPACK_IMPORTED_MODULE_0_vue___default.a.nextTick(function () {
+				_this5.$validator.resume();
+			});
 		},
 		reset: function reset() {
 			Object.assign(this.$data, this.$options.data());
@@ -47911,28 +47922,6 @@ var render = function() {
                         {
                           name: "show",
                           rawName: "v-show",
-                          value: _vm.edit === true,
-                          expression: "edit===true"
-                        }
-                      ],
-                      staticClass: "btn btn-outline-secondary pull-right",
-                      attrs: { type: "submit" },
-                      on: {
-                        click: function($event) {
-                          _vm.resetForm()
-                        }
-                      }
-                    },
-                    [_c("i", { staticClass: "fa fa-eraser" })]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
                           value: _vm.edit === false,
                           expression: "edit===false"
                         }
@@ -47944,6 +47933,21 @@ var render = function() {
                       _c("i", { staticClass: "fa fa-save text-primary" }),
                       _vm._v(" Save")
                     ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-secondary pull-right",
+                      staticStyle: { "margin-right": "2px" },
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function($event) {
+                          _vm.resetForm()
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-eraser" })]
                   )
                 ]
               )

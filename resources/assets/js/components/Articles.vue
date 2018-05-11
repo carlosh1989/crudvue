@@ -24,8 +24,10 @@
 				</div>
 				<button v-show="edit===true" type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-pencil text-success"></i> Update</button>
 				<label for=""> </label>
-				<button v-show="edit===true" v-on:click="resetForm()" type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-eraser"></i> </button>
+
 				<button v-show="edit===false" type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-save text-primary"></i> Save</button>
+
+				<button style="margin-right:2px;" v-on:click="resetForm()" type="submit" class="btn btn-outline-secondary pull-right"><i class="fa fa-eraser"></i> </button>
 			</form>
 		</div>
 	</div>
@@ -55,7 +57,10 @@ import Vue from 'vue'
 import VueSwal from 'vue-swal'
 import VeeValidate from 'vee-validate'
 
-Vue.use(VeeValidate)
+Vue.use(VeeValidate, {
+ events: ''
+});
+
 Vue.use(VueSwal)
 
 	export default {
@@ -220,6 +225,10 @@ Vue.use(VueSwal)
 				this.article.title = '';
 				this.article.body = '';	
 				this.edit = false;
+				this.$validator.pause();
+			    Vue.nextTick(() => {
+			    	this.$validator.resume();
+			    });
 			},
 			reset() {
 				Object.assign(this.$data, this.$options.data());
