@@ -4,7 +4,7 @@
   border-color: none;
   -webkit-box-shadow: none;
   box-shadow: none;
-  outline:none;
+
 }
 </style>
 <template>
@@ -18,7 +18,7 @@
 	    	
 
 		<li class="page-item">
-		<input style="margin-left:10px;" class="form-control search" type="text" v-model.lazy="search" v-debounce="500" placeholder="Search...">
+		<input style="margin-left:10px;" class="form-control search" type="text" v-model.lazy="search" placeholder="Search..." v-debounce="500">
 		</li>
 
 		<li class="page-item disabled"><a class="page-link text-dark" href="#" @click="fetchArticles(pagination.prev_page_url)"><i class="fa fa-search"></i></a></li>
@@ -144,11 +144,10 @@ Vue.use(VueSwal)
 			},
 			fetchArticles(page_url){
 				// In validators
-
 				let vm = this;
 				if(!page_url)
 				{
-					page_url = 'http://7c60a3c6.ngrok.io/crudvue/public/api/article';
+					page_url = 'http://localhost/crudvue/public/api/article';
 				}
 				
 				//var url = 'http://localhost/crudvue/public' + page_url;
@@ -186,7 +185,7 @@ Vue.use(VueSwal)
 				})
 				.then((willDelete) => {
 				  if (willDelete) {
-					fetch(`http://7c60a3c6.ngrok.io/crudvue/public/api/article/${id}`, {
+					fetch(`http://localhost/crudvue/public/api/article/${id}`, {
 						method: 'delete'
 					})
 					.then(res => res.json())
@@ -216,7 +215,7 @@ Vue.use(VueSwal)
 				        }
 				        else
 				        {
-							fetch('http://7c60a3c6.ngrok.io/crudvue/public/api/article',{
+							fetch('http://localhost/crudvue/public/api/article',{
 								method: 'post',
 								body: JSON.stringify(this.article),
 								headers: {
@@ -248,7 +247,7 @@ Vue.use(VueSwal)
 			},
 
 			updateArticle(id){
-					fetch(`http://7c60a3c6.ngrok.io/crudvue/public/api/article/${id}`, {
+					fetch(`http://localhost/crudvue/public/api/article/${id}`, {
 						method: 'put',
 						body: JSON.stringify(this.article),
 						headers: {

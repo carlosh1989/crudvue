@@ -47473,10 +47473,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 			var _this2 = this;
 
 			// In validators
-
 			var vm = this;
 			if (!page_url) {
-				page_url = 'http://7c60a3c6.ngrok.io/crudvue/public/api/article';
+				page_url = 'http://localhost/crudvue/public/api/article';
 			}
 
 			//var url = 'http://localhost/crudvue/public' + page_url;
@@ -47515,7 +47514,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 				dangerMode: true
 			}).then(function (willDelete) {
 				if (willDelete) {
-					fetch('http://7c60a3c6.ngrok.io/crudvue/public/api/article/' + id, {
+					fetch('http://localhost/crudvue/public/api/article/' + id, {
 						method: 'delete'
 					}).then(function (res) {
 						return res.json();
@@ -47540,7 +47539,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 				this.$validator.validate().then(function (result) {
 					if (!result) {} else {
-						fetch('http://7c60a3c6.ngrok.io/crudvue/public/api/article', {
+						fetch('http://localhost/crudvue/public/api/article', {
 							method: 'post',
 							body: JSON.stringify(_this4.article),
 							headers: {
@@ -47571,7 +47570,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 		updateArticle: function updateArticle(id) {
 			var _this5 = this;
 
-			fetch('http://7c60a3c6.ngrok.io/crudvue/public/api/article/' + id, {
+			fetch('http://localhost/crudvue/public/api/article/' + id, {
 				method: 'put',
 				body: JSON.stringify(this.article),
 				headers: {
@@ -53477,7 +53476,7 @@ exports = module.exports = __webpack_require__(49)(false);
 
 
 // module
-exports.push([module.i, "\n.highlighted { color: #72DE72\n}\n.form-control:focus {\n  border-color: none;\n  -webkit-box-shadow: none;\n  box-shadow: none;\n  outline:none;\n}\n", ""]);
+exports.push([module.i, "\n.highlighted { color: #72DE72\n}\n.form-control:focus {\n  border-color: none;\n  -webkit-box-shadow: none;\n  box-shadow: none;\n}\n", ""]);
 
 // exports
 
